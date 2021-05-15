@@ -16,7 +16,13 @@ console.log(game.player2.name);
 console.log(game.player1.hand);
 console.log(game.player2.hand);
 
+// Generate a random # between 1-12 (will need to figure out J, Q, K, A)
+// possible do this with assigning value to variable to console.log.
+// the following does bewteen 1-6.
 
+// const dieRoll = Math.floor(Math.random() * 6) + 1;
+//
+// console.log(`You rolled a ${dieRoll}.`);
 
 
 
