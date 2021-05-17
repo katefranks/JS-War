@@ -1,123 +1,140 @@
+let Card = (function(){
+      Card = function(deckIndex){
+        this.deckIndex = deckIndex; //0-51 index in deck
+        this.value = (deckIndex % 13)+1; //value of card 1-13
+      };
+//if J, Q, K, A:
+  Card.prototype = {
+    get number() {
+      switch(this.value) {
+        case 11:
+          return 'J';
+        case 12:
+          return 'Q';
+        case 13:
+          return 'K';
+        case 1:
+          return 'A';
+        default:
+          return this.value;
+      }
+      return this.value;
+    };
 
-function Player(name) {
-    this.name = name;
-    this.hand = [];
+  return Card;
+})();
+
+console.log(new Card(13));
+
+/////// To play game:
+
+let deck = Array.apply(null, Array(52)).map(function('', i){
+  return new Card(i);
+});
+
+for( var i = 0 ; i < 13 ; i++ ){
+  console.log(deck[i]);
 }
 
-function Game({player1, player2}) {
-    this.player1 = new Player(player1Name);
-    this.player2 = new Player(player2Name);
+// assign player decks
+
+let playerDeck1 = [], playerDeck2 = [],
+    drawIndex;
+
+// deal Cards
+
+while( deck.length > 0 ){
+  //player1 deck
+  drawIndex = Math.random() * deck.length;
+  playerDeck1.push( deck.splice(drawIndex, 1)[0] );
+
+  // Draw Card for CPU
+  drawIndex = Math.random() * deck.length;
+  playerDeck2.push( deck.splice(drawIndex.player2, 1)[0] );
+
 }
-const player1Name = prompt('What is your name Player 1?');
-const player2Name = prompt('What is your name Player 2?');
-const game = new Game({player1Name, player2Name});
-console.log(game.player1.name);
-console.log(game.player2.name);
-console.log(game.player1.hand);
-console.log(game.player2.hand);
 
-// Generate a random # between 1-12 (will need to figure out J, Q, K, A)
-// possible do this with assigning value to variable to console.log.
-// the following does bewteen 1-6.
+////// PLAY
+///Player w/ high card adds both to deck, tie- play another card.
 
-// const dieRoll = Math.floor(Math.random() * 6) + 1;
-//
-// console.log(`You rolled a ${dieRoll}.`);
+let drawAndPlay = function(highCard){
+  if( highCard ){ console.log('High Card = ', highCard); }
+
+  if( playerDeck1.length === 0 || playerDeck2.length === 0 ){
+    // game over
+    if( playerDeck1.length > 0 ){
+      console.log('Player1 Wins');
+    } else {
+      console.log('Player2 Wins');
+    }
+    return false;
+  }
+
+  // each player draws
+
+  let playerCard1 = playerDeck1.shift();
+  let playerCard2 = playerDeck2.shift();
+  let highCard = highCard ? highCard : [];
+  let playerpoints1 = [];
+  let playerpoints2 = [];
+
+
+        if( playerCard1.value === playerCard2.value ){
+          console.log('tie', playerCard1, playerCard2);
+          // tie- play another card
+          highCard.push(playerCard1);
+          highCard.push(playerCard2);
+          return drawAndPlay(rewards);
+        } else if( playerCard1.value > playerCard2.value ){
+          console.log('Player 1 wins round', playerCard1, playerCard2);
+
+          /////////Need to figure out how to add points to score
+          // playerPoints1.push(highCard);
+
+          // assign card values to player 1 deck
+          playerDeck1.splice(playerDeck1.length, 0, playerCard1, playerCard2);
+          if( highCard.length > 0 ){
+            playerDeck1 = playerDeck1.concat(highCard);
+          }
+
+        } else {
+
+          console.log('Player 2 wins round', playerCard1, playerCard2);
+
+        ////// Need to figure out how to add points
+          //playerPoints2.push(highCard);
+
+          // assign card values to player 2 deck
+          playerDeck2.splice(playerDeck2.length, 0, playerCard2, playerCard1);
+          if( highCard.length > 0 ){
+            playerDeck2 = playerDeck2.concat(highCard);
+          }
+
+        }
+
+        console.log('Player 1: Cards left = '+playerDeck1.length, 'Player 2: Cards left = '+playerDeck2.length);
+        return true;
+      };
 
 
 
-////////////// Practicing Conditionals ///////////////////
 
-// // const name = prompt("What is your name?");
-// // const message = "Hello " + name + ", let's play War!";
-// // console.log(message);
-//
-//
-// /*
-//   1. Store correct answers
-//    - When quiz begins, no answers are correct
-// */
-//
-// let correct = 0;
-// // let correct = 0;
-//
-// // // 2. Store the rank of a player
-// //
-//
-// let rank = '';
-// // let rank = '';
-//
-//
-// // // 3. Select the <main> HTML element
-// //
-// const body = document.querySelector('body');
-//
-// /*
-//   4. Ask at least 5 questions
-//    - Store each answer in a variable
-//    - Keep track of the number of correct answers
-// */
-// const question1 = prompt("What color is the sky?");
-//   if (question1.toUpperCase() === 'BLUE') {
-//     correct += 1;
-//     alert(`You're correct! You're score is ${correct}`);
-//   } else {
-//     alert("Sorry, that's wrong");
-//   }
-//
-// const question2 = prompt("What color is a stop sign?");
-//   if (question2.toUpperCase() === 'RED') {
-//     correct += 1;
-//     alert(`You're correct! You're score is ${correct}`);
-//   } else {
-//     alert("Sorry, that's wrong");
-//   }
-// //
-// const question3 = prompt("What color is a duck?");
-//   if (question3.toUpperCase() === 'YELLOW') {
-//     correct += 1;
-//     alert(`You're correct! You're score is ${correct}`);
-//   } else {
-//     alert("Sorry, that's wrong");
-//   }
-// //
-// //
-//  const question4 = prompt("What color is the ocean?");
-//   if (question4.toUpperCase() === 'BLUE') {
-//     correct += 1;
-//     alert(`You're correct! You're score is ${correct}`);
-//   } else {
-//     alert("Sorry, that's wrong");
-//   }
-// //
-// //
-// const question5 = prompt("What color is an alligator?");
-//   if (question5.toUpperCase() === 'GREEN') {
-//     correct += 1;
-//     alert(`You're correct! You're score is ${correct}`);
-//   } else {
-//     alert("Sorry, that's wrong");
-//   }
-// /*
-//   5. Rank player based on number of correct answers
-//    - 5 correct = Gold
-//    - 3-4 correct = Silver
-//    - 1-2 correct = Bronze
-//    - 0 correct = No crown
-// */
-//
-//
-// if (correct === 5) {
-//   rank = "gold";
-// } else if (correct >= 3) {
-//   rank = "silver";
-// } else if (correct >= 2) {
-//   rank = 'Bronze';
-// } else {
-//   rank = 'No Crown';
+////////////////////
+
+
+// function Player(name) {
+//     this.name = name;
+//     this.hand = [];
 // }
 //
-//
-//
-// body.innerHTML=`<h2>You got ${correct} out of 5 questions correct!</h2>
-// <p>Crown Earned: <strong>${rank}</strong></p>`;
+// function Game({player1, player2}) {
+//     this.player1 = new Player(player1Name);
+//     this.player2 = new Player(player2Name);
+// }
+// const player1Name = prompt('What is your name Player 1?');
+// const player2Name = prompt('What is your name Player 2?');
+// const game = new Game({player1Name, player2Name});
+// console.log(game.player1.name);
+// console.log(game.player2.name);
+// console.log(game.player1.hand);
+// console.log(game.player2.hand);
