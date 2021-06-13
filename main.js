@@ -129,11 +129,20 @@ Game.prototype.compare = function(player1Card, player2Card){
   console.log('player 2 card value: ', player2Card.value);
   if(player1Card.value > player2Card.value) {
     console.log(`${this.player1.name} won the round!`)
+    this.player1.hand.push(player1Card, player2Card)
+    console.log('player 1 hand: ', this.player1.hand)
+    console.log(`${this.player1.name} has ${this.player1.hand.length} cards. ${this.player2.name} has ${this.player2.hand.length} cards.`);
+    console.log('player 2 hand: ', this.player2.hand)
   } else if (player1Card.value < player2Card.value) {
     console.log(`${this.player2.name} won the round!`)
-  } else //if (player1Card.value === player2Card.value) 
+    this.player2.hand.push(player1Card, player2Card)
+    console.log('player 1 hand: ', this.player1.hand)
+    console.log(`${this.player2.name} has ${this.player2.hand.length} cards. ${this.player1.name} has ${this.player1.hand.length} cards.`);
+    console.log('player 2 hand: ', this.player2.hand)
+  } else //if (player1Card.value === player2Card.value)
   {
     console.log(`It's WAR!`)
+
   }
 }
 
