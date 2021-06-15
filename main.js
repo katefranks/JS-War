@@ -41,8 +41,8 @@ Card.prototype.print = function(){
 const Deck = function(){
   this.cards = [];
 
-  for(let i = 0; i < 4; i++) { //getting 4 suits
-    for (let j = 2; j <= 14; j++){ //getting 13 cards per suit
+  for(let i = 0; i < 2; i++) { //getting 4 suits
+    for (let j = 2; j <= 6; j++){ //getting 13 cards per suit
       this.cards.push(new Card({suit: i, value: j}));
       // this.cards.push(new Card({this.suit[i], value: j}));
     }
@@ -125,24 +125,49 @@ Game.prototype.draw = function(){
 }
 
 Game.prototype.compare = function(player1Card, player2Card){
-  console.log('player 1 card value: ', player1Card.value);
-  console.log('player 2 card value: ', player2Card.value);
+  // console.log('player 1 card value: ', player1Card.value);
+  // console.log('player 2 card value: ', player2Card.value);
   if(player1Card.value > player2Card.value) {
     console.log(`${this.player1.name} won the round!`)
     this.player1.hand.push(player1Card, player2Card)
-    console.log('player 1 hand: ', this.player1.hand)
+    // console.log('player 1 hand: ', this.player1.hand)
     console.log(`${this.player1.name} has ${this.player1.hand.length} cards. ${this.player2.name} has ${this.player2.hand.length} cards.`);
-    console.log('player 2 hand: ', this.player2.hand)
+    // console.log('player 2 hand: ', this.player2.hand)
   } else if (player1Card.value < player2Card.value) {
     console.log(`${this.player2.name} won the round!`)
     this.player2.hand.push(player1Card, player2Card)
-    console.log('player 1 hand: ', this.player1.hand)
-    console.log(`${this.player2.name} has ${this.player2.hand.length} cards. ${this.player1.name} has ${this.player1.hand.length} cards.`);
-    console.log('player 2 hand: ', this.player2.hand)
-  } else //if (player1Card.value === player2Card.value)
-  {
-    console.log(`It's WAR!`)
+    // console.log('player 1 hand: ', this.player1.hand)
+    console.log(`${this.player1.name} has ${this.player1.hand.length} cards. ${this.player2.name} has ${this.player2.hand.length} cards.`);
+    // console.log('player 2 hand: ', this.player2.hand)
+  } else if (player1Card.value === player2Card.value) {
+    console.log(`It's WAR!`);
+    this.player1.hand.push(player1Card, player2Card)
+    console.log(`${this.player1.name} has ${this.player1.hand.length} cards. ${this.player2.name} has ${this.player2.hand.length} cards.`);
+  }
+    // if(this.player1card.suit === 'spades'){
+    //   this.player1.hand.push(player1Card, player2Card)
+    // } else if (this.player1card.suit === 'diamonds') {
+    //   this.player1.hand.push(player1Card, player2Card)
+    // } else if (this.player1card.suit === 'clubs') {
+    //   this.player2.hand.push(player1Card, player2Card)
+    // }
+    // else {
+    //   this.player2.hand.push(player1Card, player2Card)
+    // }
 
+  while(this.player1.hand.length > 0 && this.player2.hand.length >0){
+    // prompt('Next round!');
+    game.draw();
+
+  }
+  game.verifyWin();
+}
+
+Game.prototype.verifyWin = function() {
+  if(this.player1.hand == 0) {
+    console.log(`${this.player2.name} is the game winner!`)
+  }else if(this.player2.hand == 0) {
+    console.log(`${this.player1.name} is the game winner!`)
   }
 }
 
